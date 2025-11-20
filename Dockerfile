@@ -1,4 +1,4 @@
-FROM postgis/postgis:16-master
+FROM postgis/postgis:17-master
 
 WORKDIR /app
 
