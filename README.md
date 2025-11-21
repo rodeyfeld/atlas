@@ -1,16 +1,16 @@
 # Atlas
 
-PostgreSQL 16 with PostGIS extension - shared database image for Universe projects.
+Postgres 17 with PostGIS - the shared database for everything in Universe.
 
-## Quick Start
+## Build & push
 
-### Build & Publish
 ```bash
 docker build -t edrodefeld/atlas:latest .
 docker push edrodefeld/atlas:latest
 ```
 
-### Test Locally
+## Quick test
+
 ```bash
 docker run -p 5432:5432 --name atlas \
   -e POSTGRES_PASSWORD=atlas_password \
@@ -19,7 +19,7 @@ docker run -p 5432:5432 --name atlas \
   -d atlas
 ```
 
-## Usage in Docker Compose
+## Using in docker-compose
 
 ```yaml
 postgres:
@@ -28,28 +28,10 @@ postgres:
     - 5432:5432
   volumes:
     - postgres-db-volume:/var/lib/postgresql/data
-  user: postgres
   environment:
     - POSTGRES_DB=augur
     - POSTGRES_USER=atlas_user
     - POSTGRES_PASSWORD=atlas_password
-  healthcheck:
-    test: ["CMD-SHELL", "pg_isready", "-d", "augur"]
-    interval: 30s
-    timeout: 60s
-    retries: 5
-    start_period: 80s
 ```
 
-## Environment Variables
-
-- `POSTGRES_DB` - Database name
-- `POSTGRES_USER` - Database user (default: postgres)
-- `POSTGRES_PASSWORD` - Required password
-
-## Notes
-
-- `init.sql` runs on first startup only
-- Data persists in volumes across rebuilds
-- Use `docker-compose down -v` to reset database
-- Projects using this: augur, luna, pythology
+The `init.sql` script automatically creates the `augur` and `dreamflow` databases on first startup. Data persists in volumes, use `docker-compose down -v` to wipe everything.
