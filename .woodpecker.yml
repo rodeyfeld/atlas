@@ -34,7 +34,6 @@ steps:
         
         # Create K8s secret
         kubectl create secret generic atlas-env-secrets \
-          --from-literal=POSTGRES_USER="$(cat /tmp/secrets.json | jq -r '.data.data.postgres_user')" \
           --from-literal=POSTGRES_PASSWORD="$(cat /tmp/secrets.json | jq -r '.data.data.postgres_password')" \
           -n galaxy --dry-run=client -o yaml | kubectl apply -f -
     when:
